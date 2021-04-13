@@ -9,6 +9,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => res.sendFile(__dirname + "/views/index.html"));
 app.get("/", (req, res) => res.send("Hello Express"));
 
@@ -25,7 +28,14 @@ app.get("/now", (req, res, next) => {
 
 app.get("/:word/echo", (req, res) => res.json({echo: req.params.word}));
 
-
+app.route("/name").get((req, res, next) => {
+  console.log(req.query);
+  res.json({name: `${req.query.first} ${req.query.last}`});
+  next();
+}).post((req, res, next) => {
+  res.json({name: `${req.body.first} ${req.body.last}`});
+  next();
+});
 
 
 
